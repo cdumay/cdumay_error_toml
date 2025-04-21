@@ -1,0 +1,16 @@
+[package]
+name = "cdumay_error_toml"
+version = "0.1.0"
+edition = "2024"
+authors = ["Cédric Dumay <cedric.dumay@gmail.com>"]
+description = "A Rust Library for TOML error"
+documentation = "https://docs.rs/cdumay_error_toml"
+homepage = "https://github.com/cdumay/cdumay_error_toml"
+license-file = "LICENSE"
+readme = "README.md"
+repository = "https://github.com/cdumay/cdumay_error_toml"
+
+[dependencies]
+toml = "0.8"
+cdumay_error = { version = "1.0", features = ["derive"] }
+serde-value = "0.7"
