@@ -3,7 +3,7 @@ mod tests {
     use serde_value::Value;
     use std::collections::BTreeMap;
     use cdumay_error::ErrorConverter;
-    use cdumay_error_toml::{TomlDeserializeError, TomlSerializeError};
+    use cdumay_error_toml::{TomlDeserializeErrorConverter, TomlSerializeErrorConverter};
 
     fn sample_context() -> BTreeMap<String, Value> {
         let mut context = BTreeMap::new();
@@ -19,7 +19,7 @@ mod tests {
         let context = sample_context();
         let message = "Failed to serialize config".to_string();
 
-        let converted = TomlSerializeError::convert(&error, message.clone(), context.clone());
+        let converted = TomlSerializeErrorConverter::convert(&error, message.clone(), context.clone());
 
         assert_eq!(converted.message, message);
         assert_eq!(converted.kind.message_id(), "TOML-00001");
@@ -35,7 +35,7 @@ mod tests {
         let context = sample_context();
         let message = "Failed to parse TOML".to_string();
 
-        let converted = TomlDeserializeError::convert(&error, message.clone(), context.clone());
+        let converted = TomlDeserializeErrorConverter::convert(&error, message.clone(), context.clone());
 
         assert_eq!(converted.message, message);
         assert_eq!(converted.kind.message_id(), "TOML-00001");
