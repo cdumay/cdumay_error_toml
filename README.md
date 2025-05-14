@@ -15,6 +15,7 @@ This helps standardize error handling in Rust applications that process TOML con
 - Provides unique error codes, HTTP status codes, and descriptions
 - Supports rich contextual error metadata via `BTreeMap`
 - Uses the `cdumay_error::ErrorConverter` trait for easy integration
+- Provides a convenient macros for error conversion
 
 ### Usage Example
 
@@ -30,6 +31,7 @@ toml = "0.8"
 
 #### Code sample
 
+Using the `TomlDeserializeErrorConverter` and `TomlSerializeErrorConverter` directly:
 ```rust
 use cdumay_error::ErrorConverter;
 use std::collections::BTreeMap;
@@ -70,5 +72,31 @@ fn deserialize_config(input: &str) -> Result<Config, cdumay_error::Error> {
   "context": {
     "input": "[invalid toml]"
   }
+}
+```
+
+Using the macros:
+```rust
+use cdumay_error::ErrorConverter;
+use std::collections::BTreeMap;
+use serde::{Deserialize, Serialize};
+use cdumay_error_toml::{convert_deserialize_result, convert_serialize_result};
+
+#[derive(Serialize, Deserialize)]
+struct Config {
+    name: String,
+    debug: bool,
+}
+
+fn serialize_config(config: &Config) -> Result<String, cdumay_error::Error> {
+    let mut ctx = BTreeMap::new();
+    ctx.insert("config_name".into(), serde_value::Value::String(config.name.clone()));
+    convert_serialize_result!(toml::to_string(config), ctx, "Failed to serialize TOML config")
+}
+
+fn deserialize_config(input: &str) -> Result<Config, cdumay_error::Error> {
+    let mut ctx = BTreeMap::new();
+    ctx.insert("input".into(), serde_value::Value::String(input.to_string()));
+    convert_deserialize_result!(toml::from_str::<Config>(input), ctx, "Failed to deserialize TOML config")
 }
 ```
