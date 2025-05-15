@@ -3,9 +3,9 @@ macro_rules! convert_deserialize_result {
     ($result:expr, $context:expr, $text:expr) => {
         $result.map_err(|err| cdumay_error_toml::TomlDeserializeErrorConverter::convert_error(&err, Some($text.to_string()), $context))
     };
-    ($result:expr, $text:expr) => {
+    ($result:expr, $context:expr) => {
         $result.map_err(|err| {
-            cdumay_error_toml::TomlDeserializeErrorConverter::convert_error(&err, Some($text.to_string()), std::collections::BTreeMap::new())
+            cdumay_error_toml::TomlDeserializeErrorConverter::convert_error(&err,  None, $context)
         })
     };
     ($result:expr) => {
