@@ -1,9 +1,9 @@
 # cdumay_error_toml
 
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-blue)](./LICENSE)
-[![cdumay_core_toml on crates.io](https://img.shields.io/crates/v/cdumay_core_toml)](https://crates.io/crates/cdumay_core_toml)
-[![cdumay_core_toml on docs.rs](https://docs.rs/cdumay_core_toml/badge.svg)](https://docs.rs/cdumay_core_toml)
-[![Source Code Repository](https://img.shields.io/badge/Code-On%20GitHub-blue?logo=GitHub)](https://github.com/cdumay/cdumay_core_toml)
+[![cdumay_error_toml on crates.io](https://img.shields.io/crates/v/cdumay_error_toml)](https://crates.io/crates/cdumay_error_toml)
+[![cdumay_error_toml on docs.rs](https://docs.rs/cdumay_error_toml/badge.svg)](https://docs.rs/cdumay_error_toml)
+[![Source Code Repository](https://img.shields.io/badge/Code-On%20GitHub-blue?logo=GitHub)](https://github.com/cdumay/cdumay_error_toml)
 
 A lightweight utility crate that wraps TOML serialization and deserialization errors (`toml::ser::Error`, `toml::de::Error`) and converts them into structured, typed errors using the [`cdumay_core`](https://!docs.rs/cdumay-error/) framework.
 
