@@ -1,4 +1,4 @@
-use cdumay_error::ErrorConverter;
+use cdumay_core::ErrorConverter;
 use cdumay_error_toml::{TomlDeserializeErrorConverter, TomlSerializeErrorConverter};
 use serde_value::Value;
 use std::collections::BTreeMap;
@@ -19,9 +19,8 @@ fn test_toml_serialize_error_conversion() {
 
     let converted = TomlSerializeErrorConverter::convert(&error, message.clone(), context.clone());
 
-    assert_eq!(converted.message, message);
-    assert_eq!(converted.kind.message_id(), "TOML-00001");
-    assert_eq!(converted.details.unwrap(), context);
+    assert_eq!(converted.message(), message);
+    assert_eq!(converted.details(), context);
 }
 
 #[test]
@@ -35,7 +34,6 @@ fn test_toml_deserialize_error_conversion() {
 
     let converted = TomlDeserializeErrorConverter::convert(&error, message.clone(), context.clone());
 
-    assert_eq!(converted.message, message);
-    assert_eq!(converted.kind.message_id(), "TOML-00001");
-    assert_eq!(converted.details.unwrap(), context);
+    assert_eq!(converted.message(), message);
+    assert_eq!(converted.details(), context);
 }

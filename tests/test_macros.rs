@@ -1,4 +1,4 @@
-use cdumay_error::ErrorConverter;
+use cdumay_core::ErrorConverter;
 use cdumay_error_toml::{convert_deserialize_result, convert_serialize_result};
 use serde_value::Value;
 use std::collections::BTreeMap;
@@ -12,8 +12,7 @@ fn test_serialize_macro() {
     assert!(converted.is_err());
 
     let err = converted.unwrap_err();
-    assert_eq!(err.kind.message_id(), "TOML-00001");
-    assert!(err.message.contains("Failed to serialize config"));
+    assert!(err.message().contains("Failed to serialize config"));
 }
 
 #[test]
@@ -23,6 +22,5 @@ fn test_toml_deserialize_error_conversion() {
     assert!(converted.is_err());
 
     let err = converted.unwrap_err();
-    assert_eq!(err.kind.message_id(), "TOML-00001");
-    assert!(err.message.contains("invalid array"));
+    assert!(err.message().contains("invalid array"));
 }

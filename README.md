@@ -1,11 +1,11 @@
 # cdumay_error_toml
 
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-blue)](./LICENSE)
-[![cdumay_error_toml on crates.io](https://img.shields.io/crates/v/cdumay_error_toml)](https://crates.io/crates/cdumay_error_toml)
-[![cdumay_error_toml on docs.rs](https://docs.rs/cdumay_error_toml/badge.svg)](https://docs.rs/cdumay_error_toml)
-[![Source Code Repository](https://img.shields.io/badge/Code-On%20GitHub-blue?logo=GitHub)](https://github.com/cdumay/cdumay_error_toml)
+[![cdumay_core_toml on crates.io](https://img.shields.io/crates/v/cdumay_core_toml)](https://crates.io/crates/cdumay_core_toml)
+[![cdumay_core_toml on docs.rs](https://docs.rs/cdumay_core_toml/badge.svg)](https://docs.rs/cdumay_core_toml)
+[![Source Code Repository](https://img.shields.io/badge/Code-On%20GitHub-blue?logo=GitHub)](https://github.com/cdumay/cdumay_core_toml)
 
-A lightweight utility crate that wraps TOML serialization and deserialization errors (`toml::ser::Error`, `toml::de::Error`) and converts them into structured, typed errors using the [`cdumay_error`](https://!docs.rs/cdumay-error/) framework.
+A lightweight utility crate that wraps TOML serialization and deserialization errors (`toml::ser::Error`, `toml::de::Error`) and converts them into structured, typed errors using the [`cdumay_core`](https://!docs.rs/cdumay-error/) framework.
 
 This helps standardize error handling in Rust applications that process TOML configuration or data files, while enriching error details with structured context.
 
@@ -14,7 +14,7 @@ This helps standardize error handling in Rust applications that process TOML con
 - Categorizes TOML-related errors into `Serialization` and `Deserialization`
 - Provides unique error codes, HTTP status codes, and descriptions
 - Supports rich contextual error metadata via `BTreeMap`
-- Uses the `cdumay_error::ErrorConverter` trait for easy integration
+- Uses the `cdumay_core::ErrorConverter` trait for easy integration
 - Provides a convenient macros for error conversion
 
 ### Usage Example
@@ -23,7 +23,7 @@ This helps standardize error handling in Rust applications that process TOML con
 
 ```toml
 [dependencies]
-cdumay_error = "0.2"
+cdumay_core = "0.1"
 serde = { version = "1.0", features = ["derive"] }
 serde-value = "0.7"
 toml = "0.8"
@@ -33,7 +33,7 @@ toml = "0.8"
 
 Using the `TomlDeserializeErrorConverter` and `TomlSerializeErrorConverter` directly:
 ```rust
-use cdumay_error::ErrorConverter;
+use cdumay_core::ErrorConverter;
 use std::collections::BTreeMap;
 use serde::{Deserialize, Serialize};
 use cdumay_error_toml::{TomlDeserializeErrorConverter, TomlSerializeErrorConverter};
@@ -44,7 +44,7 @@ struct Config {
     debug: bool,
 }
 
-fn serialize_config(config: &Config) -> Result<String, cdumay_error::Error> {
+fn serialize_config(config: &Config) -> Result<String, cdumay_core::Error> {
     toml::to_string(config).map_err(|e| {
         let mut ctx = BTreeMap::new();
         ctx.insert("config_name".into(), serde_value::Value::String(config.name.clone()));
@@ -52,7 +52,7 @@ fn serialize_config(config: &Config) -> Result<String, cdumay_error::Error> {
     })
 }
 
-fn deserialize_config(input: &str) -> Result<Config, cdumay_error::Error> {
+fn deserialize_config(input: &str) -> Result<Config, cdumay_core::Error> {
     toml::from_str::<Config>(input).map_err(|e| {
         let mut ctx = BTreeMap::new();
         ctx.insert("input".into(), serde_value::Value::String(input.to_string()));
@@ -77,7 +77,7 @@ fn deserialize_config(input: &str) -> Result<Config, cdumay_error::Error> {
 
 Using the macros:
 ```rust
-use cdumay_error::ErrorConverter;
+use cdumay_core::ErrorConverter;
 use std::collections::BTreeMap;
 use serde::{Deserialize, Serialize};
 use cdumay_error_toml::{convert_deserialize_result, convert_serialize_result};
@@ -88,13 +88,13 @@ struct Config {
     debug: bool,
 }
 
-fn serialize_config(config: &Config) -> Result<String, cdumay_error::Error> {
+fn serialize_config(config: &Config) -> Result<String, cdumay_core::Error> {
     let mut ctx = BTreeMap::new();
     ctx.insert("config_name".into(), serde_value::Value::String(config.name.clone()));
     convert_serialize_result!(toml::to_string(config), ctx, "Failed to serialize TOML config")
 }
 
-fn deserialize_config(input: &str) -> Result<Config, cdumay_error::Error> {
+fn deserialize_config(input: &str) -> Result<Config, cdumay_core::Error> {
     let mut ctx = BTreeMap::new();
     ctx.insert("input".into(), serde_value::Value::String(input.to_string()));
     convert_deserialize_result!(toml::from_str::<Config>(input), ctx, "Failed to deserialize TOML config")
