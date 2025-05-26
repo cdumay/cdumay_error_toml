@@ -42,7 +42,7 @@
 //!     debug: bool,
 //! }
 //!
-//! fn serialize_config(config: &Config) -> Result<String, cdumay_core::Error> {
+//! fn serialize_config(config: &Config) -> cdumay_core::Result<String> {
 //!     toml::to_string(config).map_err(|e| {
 //!         let mut ctx = BTreeMap::new();
 //!         ctx.insert("config_name".into(), serde_value::Value::String(config.name.clone()));
@@ -50,7 +50,7 @@
 //!     })
 //! }
 //!
-//! fn deserialize_config(input: &str) -> Result<Config, cdumay_core::Error> {
+//! fn deserialize_config(input: &str) -> cdumay_core::Result<Config> {
 //!     toml::from_str::<Config>(input).map_err(|e| {
 //!         let mut ctx = BTreeMap::new();
 //!         ctx.insert("input".into(), serde_value::Value::String(input.to_string()));
@@ -86,13 +86,13 @@
 //!     debug: bool,
 //! }
 //!
-//! fn serialize_config(config: &Config) -> Result<String, cdumay_core::Error> {
+//! fn serialize_config(config: &Config) -> cdumay_core::Result<String> {
 //!     let mut ctx = BTreeMap::new();
 //!     ctx.insert("config_name".into(), serde_value::Value::String(config.name.clone()));
 //!     convert_serialize_result!(toml::to_string(config), ctx, "Failed to serialize TOML config")
 //! }
 //!
-//! fn deserialize_config(input: &str) -> Result<Config, cdumay_core::Error> {
+//! fn deserialize_config(input: &str) -> cdumay_core::Result<Config> {
 //!     let mut ctx = BTreeMap::new();
 //!     ctx.insert("input".into(), serde_value::Value::String(input.to_string()));
 //!     convert_deserialize_result!(toml::from_str::<Config>(input), ctx, "Failed to deserialize TOML config")
